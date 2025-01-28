@@ -1,46 +1,41 @@
 import tkinter as tk
-from tkinter import *
+from tkinter import ttk
+import readAndWrite as rw
 from readAndWrite import *
 
 root = tk.Tk()
-root.title("Movie Selecter")
-root.geometry("250x300")  
+root.title("Movie Picker")
+root.geometry("250x250")
+root.resizable(False, False) # prevent ui issues
 
+label_title = ttk.Label(root, text="Movie Picker", font=(16))
+label_title.pack(pady=10)
 
-        
+frame_main = ttk.Frame(root)
+frame_main.pack(fill=tk.BOTH)
 
-listbox = tk.Listbox(root, height = 10, 
-                  width = 40, 
-                  bg = "grey",
-                  activestyle = 'dotbox', 
-                  fg = "black")
+listbox = tk.Listbox(frame_main, height=10)
+listbox.grid(row=0, column=0, sticky="ns", padx=[10,0])
 
-# Load movie data into the listBox
 def load():
-    data = readData()
+    data = rw.readData()
     for i in data:
         listbox.insert(0, i[0])
 
-def on_click():
-    # not implimented
-    return
+frame_buttons = ttk.Frame(frame_main)
+frame_buttons.grid(row=0, column=1, sticky="n", padx=10)
 
-btnAdd = tk.Button(root, text="Add Movie")
-btnDelete = tk.Button(root, text="Delete Movie")
-btnFind = tk.Button(root, text="Find Me A Movie", command=on_click)
-lblMovies = tk.Label(root, text = "List of Movies")
+button1 = ttk.Button(frame_buttons, text="Add Movie", command=lambda: rw.on_button_click("Add"))
+button1.pack(pady=[35,0])
 
+button2 = ttk.Button(frame_buttons, text="Delete Movie", command=lambda: rw.on_button_click("Delete"))
+button2.pack(pady=10)
 
+button3 = ttk.Button(frame_buttons, text="Information", command=lambda: rw.on_button_click("Info"))
+button3.pack()
 
-# Add widgets to the gui
-btnFind.grid(row=2,column=0)
-listbox.grid(row=1,column=0)
-lblMovies.grid(row=0,column=0)
-btnAdd.grid(row=1,column=1)
-btnDelete.grid(row=2,column=1)
-
-
-
+button_below = ttk.Button(root, text="Find me a movie!", command=lambda: rw.on_button_click("Find"))
+button_below.pack(pady=5)
 
 load()
 root.mainloop()
